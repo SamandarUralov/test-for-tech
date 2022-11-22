@@ -1,23 +1,24 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { getUsers } from "./store/userReducer";
+
+import "./App.css";
 
 function App() {
+  const dispatch = useDispatch();
+  const { users, loading } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    dispatch(getUsers(5));
+  }, []);
+
+  if (loading) return <p>Loading...</p>;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h2>Blog users</h2>
+      {React.Children.toArray(users.map((user) => <p>{user.email}</p>))}
     </div>
   );
 }
